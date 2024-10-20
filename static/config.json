@@ -1,0 +1,11 @@
+{
+  "EnableNuiCommand": true,
+
+  "usableItems": [
+    { "name": "electrodisk", "netEvent": "consumables:client:useElectrodisk", "model": "electrodisk" },
+    { "name": "gravestone", "netEvent": "consumables:client:useGravestone", "model": "gravestone" },
+    { "name": "buckler", "netEvent": "consumables:client:useBuckler", "model": "buckler" },
+    { "name": "uppercut", "netEvent": "consumables:client:useUppercut", "model": "uppercut" },
+    { "name": "rcbandito", "netEvent": "consumables:client:useRcbandito", "model": "rcbandito" }
+  ]
+}

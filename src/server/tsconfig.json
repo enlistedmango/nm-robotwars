@@ -1,0 +1,8 @@
+{
+  "extends": "../common/tsconfig.json",
+  "compilerOptions": {
+    "types": ["@types/node", "@citizenfx/server"],
+    "moduleResolution": "node"
+  },
+  "include": ["./"]
+}
