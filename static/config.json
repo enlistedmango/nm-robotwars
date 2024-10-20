@@ -1,5 +1,5 @@
 {
-  "EnableNuiCommand": true,
+  "EnableNuiCommand": false,
 
   "usableItems": [
     { "name": "electrodisk", "netEvent": "consumables:client:useElectrodisk", "model": "electrodisk" },

@@ -4,12 +4,11 @@ import * as cfx from "@nativewrappers/fivem/client"
 
 const playerPed: number = PlayerPedId();
 const [x, y, z] = GetEntityCoords(playerPed, false);
-const currentCoords = [x, y, z];
+const currentCoords = [x, y, z] as [number, number, number];
 const playerModels: Map< number, number> = new Map()
 let isOpen: boolean = false
-
 let buttonsHandle: number = 0
-let interval: number = 0
+let interval: CitizenTimer
 let rcBotEntity: number | null = 0
 let rcBotCam: number = 0
 let isCameraActive: boolean = false;
@@ -27,8 +26,8 @@ Config.usableItems.forEach((item: { netEvent: string; model: string }) => {
 
 async function spawnBot(rcBotModel: string): Promise<void> {
   const [x, y, z] = GetEntityCoords(playerPed, false) as [number, number, number];
-  const [xOffset, yOffset, zOffset] = GetOffsetFromCoordAndHeadingInWorldCoords(x, y, z, h, 0.0, 1.0, 0.0) as [number, number, number];
   const h = GetEntityHeading(playerPed);
+  const [xOffset, yOffset, zOffset] = GetOffsetFromCoordAndHeadingInWorldCoords(x, y, z, h, 0.0, 1.0, 0.0) as [number, number, number];
   const startTime = GetGameTimer();
 
   RequestModel(rcBotModel);
@@ -211,7 +210,7 @@ function handleBotControls(): void {
 
   if (isOpen) {
     setTimeout(() => {
-      SetVehicleDoorShut(rcBotEntity, 1, false, false);
+      SetVehicleDoorShut(rcBotEntity, 1, false);
       isOpen = false;
     }, 500);
   }
@@ -275,14 +274,14 @@ async function controllerLoop(): Promise<void> {
     await cfx.Delay(0);
   }
 
-  const controllerObject = CreateObject(botController, currentCoords.x, currentCoords.y, currentCoords.z, true, true, false)
+  const controllerObject = CreateObject(botController, currentCoords[0], currentCoords[1], currentCoords[2], true, true, false)
   AttachEntityToEntity(controllerObject, PlayerPedId(), GetPedBoneIndex(playerPed, 18905), 0.16, 0, 0.12, -137, -71, -14, true, true, false, true, 1, true)
   SetModelAsNoLongerNeeded(botController)
 
   TaskPlayAnim( playerPed, animDict, animName, 3.0, 1.0, -1 ,49 , 0, false, false, false,)
 }
 
-async function pickupEntity(): void {
+async function pickupEntity(): Promise<void> {
   if (rcBotEntity)
   {
     await playerAnim();
@@ -299,10 +298,10 @@ async function pickupEntity(): void {
   }
 }
 
-function notification(message) {
+function notification(message: string) {
   SetNotificationTextEntry("STRING")
   AddTextComponentString(message)
-  DrawNotification(0, 1)
+  DrawNotification(false, true)
 }
 
 on("onResourceStart", () => {
