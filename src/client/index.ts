@@ -25,14 +25,13 @@ Config.usableItems.forEach((item: { netEvent: string; model: string }) => {
   });
 });
 
-//TODO: Adding in function to check robot distance
-
 async function spawnBot(rcBotModel: string): Promise<void> {
   const [x, y, z] = GetEntityCoords(playerPed, false) as [number, number, number];
+  const [xOffset, yOffset, zOffset] = GetOffsetFromCoordAndHeadingInWorldCoords(x, y, z, h, 0.0, 1.0, 0.0) as [number, number, number];
   const h = GetEntityHeading(playerPed);
+  const startTime = GetGameTimer();
 
   RequestModel(rcBotModel);
-  const startTime = GetGameTimer();
 
   while (!HasModelLoaded(rcBotModel)) {
     await cfx.Delay(0);
@@ -44,8 +43,6 @@ async function spawnBot(rcBotModel: string): Promise<void> {
 
   await playerAnim();
   await cfx.Delay(700);
-
-  const [xOffset, yOffset, zOffset] = GetOffsetFromCoordAndHeadingInWorldCoords(x, y, z, h, 0.0, 1.0, 0.0) as [number, number, number];
 
   rcBotEntity = CreateVehicle(rcBotModel, xOffset, yOffset, zOffset, h, true, false);
   SetModelAsNoLongerNeeded(rcBotModel);
@@ -63,8 +60,6 @@ async function spawnBot(rcBotModel: string): Promise<void> {
   const entityHeading = GetEntityHeading(rcBotEntity);
   SetCamRot(rcBotCam, 0.0, 0.0, entityHeading, 2);
 
-
-  // This is some boilerplate code that I kept in place for the UI
   if (Config.EnableNuiCommand) {
     onNet(`${cache.resource}:startGame`, () => {
       SetNuiFocus(true, true);
@@ -92,7 +87,7 @@ function createBotLoop(entity: number, cam: number) {
   setInterval(() => {
     if (!DoesEntityExist(rcBotEntity!)) return;
 
-    if (IsControlJustPressed(0, 47)) { // [G] enters POV camera
+    if (IsControlJustPressed(0, 47)) {
       if (isCameraActive) {
         deactivateCamera();
       } else {
@@ -182,7 +177,6 @@ function removeInstructionalButtons(): void {
     clearInterval(interval);
     interval = null;
   }
-
   if (buttonsHandle) {
     SetScaleformMovieAsNoLongerNeeded(buttonsHandle);
     buttonsHandle = null;
@@ -190,7 +184,6 @@ function removeInstructionalButtons(): void {
 }
 
 function activateCamera(): void {
-
   RenderScriptCams(true, true, 600, true, true);
   SetTimecycleModifier("heliGunCam")
   SetTimecycleModifierStrength(1.2)
@@ -204,9 +197,7 @@ function deactivateCamera(): void {
 }
 
 function handleBotControls(): void {
-
-  // These checks are for opening and closing the door, for flipping.
-  if (IsControlPressed(0, 86)) { // I've set this to E, which would be the horn
+  if (IsControlPressed(0, 86)) {
     setTimeout(() => {
       if (IsControlPressed(0, 86)) {
         if (!isOpen) {
@@ -224,8 +215,6 @@ function handleBotControls(): void {
       isOpen = false;
     }, 500);
   }
-
-  // The below will handle the controls for moving the bot around
 
   if (IsControlPressed(0, 172)) {
     TaskVehicleTempAction(PlayerPedId(), rcBotEntity, 9, 1);
@@ -291,16 +280,13 @@ async function controllerLoop(): Promise<void> {
   SetModelAsNoLongerNeeded(botController)
 
   TaskPlayAnim( playerPed, animDict, animName, 3.0, 1.0, -1 ,49 , 0, false, false, false,)
-
 }
 
 async function pickupEntity(): void {
   if (rcBotEntity)
   {
     await playerAnim();
-
     await cfx.Delay(800)
-
     DeleteEntity(rcBotEntity);
 
     if (isCameraActive) {
@@ -308,9 +294,7 @@ async function pickupEntity(): void {
     }
 
     playerModels.delete(playerPed);
-
     removeInstructionalButtons()
-
     rcBotEntity = null;
   }
 }

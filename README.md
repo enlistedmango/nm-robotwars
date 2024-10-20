@@ -6,6 +6,9 @@ I used a boilerplate from Overextended in this instance as it was up to date and
 I have no doubt about the code being all over the place, and I've tried to keep it as standalone as possible so far.
 The only part that's based on a framework is the `CreateUseableItem` that comes from the TMC framework that I help out with.
 
+There's currently a basic UI as part of the boilerplate, and to open the UI you first need to use an item, then run the command
+`/startGame`
+
 ---
 
 **_DONE_**
