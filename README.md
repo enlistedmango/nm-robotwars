@@ -25,7 +25,13 @@ There's currently a basic UI as part of the boilerplate, and to open the UI you 
 
 
 **TODO**
+- [ ] Handle player events (onSpawn, onDisconnect)
 - [ ] Allow people to carry the bots around
+  - [ ] Spawn model in hand
+  - [ ] Give option to place item (similar to car spawning)
+  - [ ] Once item is placed, then run `spawnBot` function
+- [ ] Pickup annimation doesn't run properly
+- [ ] If ped get's knocked over by RC car, it breaks the controls
 - [ ] Add in distance checks to *disconnect* the bot if too far
 - [ ] Basic RC customisations
 - [ ] Point scoring UI
@@ -33,10 +39,11 @@ There's currently a basic UI as part of the boilerplate, and to open the UI you 
 
 ### Known Bugs
 
-- OnPlayerLoaded:
-  - You're unable to see the bot you're trying to spawn, but you see all other options
-- Controller stays attached to player after pickup
-- Sometimes the POV camera bugs out, and it seems like the cam removes itself
+1. You're unable to see the bot you're trying to spawn, but you see all other options
+    - After you spawn and use an item, there's a slight delay and then the control button text
+    - will show on screen. Only after restarting the script, will you see a spawned entity
+2. Controller stays attached to player after pickup - FIXED
+3. Sometimes the POV camera bugs out, and it seems like the cam removes itself
 
 ### Performance
 Base Resmon: 0.03ms <br>
