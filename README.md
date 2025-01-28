@@ -1,6 +1,6 @@
 ## Robot Wars Project
 
-This is a tracking of a robot war script, built with Typescript.
+This is a tracking of a robot war script, built with Typescript for the TMC Framework.
 I used a boilerplate from Overextended in this instance as it was up to date and allowed for expansion into a UI with React.
 
 I have no doubt about the code being all over the place, and I've tried to keep it as standalone as possible so far.
